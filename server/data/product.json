@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "macbook pro 2017",
+        "price": 850,
+        "description": "macbook pro 2017 with i5 8gbs ram and 250gb storage"
+    },
+    {
+        "id": 2,
+        "name": "macbook air M2 2020",
+        "price": 2000,
+        "description": "macbook air M2 2020 16gb ram and 1tb"
+    },
+    {
+        "id": 3,
+        "name": "macbook air M3 2021",
+        "price": 2100,
+        "description": "macbook air M3 2021 16gb ram and 2tb"
+    }
+]
