@@ -3,7 +3,8 @@ const dotenv = require("dotenv")
 const morgan = require("morgan")
 const mongoose = require("mongoose")
 const globalErrorHandler = require("./controllers/error.controller")
-const ProductRouter = require("./routers/product.router")
+const cors = require("cors")
+const laptopRouter = require("./routers/laptop.router")
 
 const app = express()
 
@@ -15,7 +16,9 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(globalErrorHandler)
 
-app.use("/products", ProductRouter)
+app.use(cors())
+
+app.use("/api/laptops", laptopRouter)
 
 mongoose.connect(process.env.DATABASE)
     .then(() => {
