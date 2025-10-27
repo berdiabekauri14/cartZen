@@ -5,6 +5,8 @@ const mongoose = require("mongoose")
 const globalErrorHandler = require("./controllers/error.controller")
 const cors = require("cors")
 const laptopRouter = require("./routers/laptop.router")
+const authRouter = require("./routers/auth.router")
+const userRouter = require("./routers/user.router")
 
 const app = express()
 
@@ -19,6 +21,10 @@ app.use(globalErrorHandler)
 app.use(cors())
 
 app.use("/api/laptops", laptopRouter)
+
+app.use("/api/users", userRouter)
+
+app.use("/api/auth", authRouter)
 
 mongoose.connect(process.env.DATABASE)
     .then(() => {
