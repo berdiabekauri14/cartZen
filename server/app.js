@@ -20,6 +20,8 @@ app.use(globalErrorHandler)
 
 app.use(cors())
 
+app.use(express.json())
+
 app.use("/api/laptops", laptopRouter)
 
 app.use("/api/users", userRouter)
