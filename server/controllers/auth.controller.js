@@ -13,7 +13,7 @@ const createSendToken = (user, statusCode) => {
 
     const cookiesOption = {
         maxAge: process.env.COOKIES_EXPIRES * 24 * 60 * 60 * 1000,
-        secure: process.env.NODE_ENV = "development" ? false : true,
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         sameSite: "Lax"
     }
@@ -41,13 +41,6 @@ const SignUp = catchAsync(async (req, res, next) => {
 
     createSendToken(newUser, token)
 
-    const code = newUser.verificationCode();
-    await newUser.save({ validateBeforeSave: false });
-
-    const url = `${req.protocol}://${req.get("host")}/api/v1/auth/verify/${code}`;
-
-    sendEmail({email, url}, "Welcome to chatbook", `Your code is ${code}`)
-
     res.status(201).json({
         newUser,
         token
@@ -57,11 +50,13 @@ const SignUp = catchAsync(async (req, res, next) => {
 const logIn = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
-    if (User.email !== email || User.password !== password) {
-        return new AppError("Email or password is incorrect", 403)
+    const user = User.findById()
+
+    if (user.email !== email || user.password !== password) {
+        return next(new AppError("Email or password is incorrect", 403))
     }
 
-    res.json("You succsefully logged in!")
+    res.json(user)
 })
 
 module.exports = { SignUp, logIn }

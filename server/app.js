@@ -7,6 +7,7 @@ const cors = require("cors")
 const laptopRouter = require("./routers/laptop.router")
 const authRouter = require("./routers/auth.router")
 const userRouter = require("./routers/user.router")
+const cookieParser = require("cookie-parser")
 
 const app = express()
 
@@ -21,6 +22,8 @@ app.use(globalErrorHandler)
 app.use(cors())
 
 app.use(express.json())
+
+app.use(cookieParser())
 
 app.use("/api/laptops", laptopRouter)
 
