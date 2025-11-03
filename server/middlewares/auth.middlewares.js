@@ -2,16 +2,6 @@ const User = require("../models/user.model");
 const AppError = require("../utils/appError");
 const jwt = require("jsonwebtoken")
 
-const allowedTo = (...roles) => {
-    return (req, res, next) => {
-        if (!roles.includes(req.user.roles)) {
-            return next(new AppError("you dont have permission to this!", 401))
-        }
-
-        next();
-    }
-}
-
 const protect = async (req, res, next) => {
     try {
         const token = req.cookies.lt;
