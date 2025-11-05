@@ -1,12 +1,29 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-refresh/only-export-components */
+import { useEffect } from "react";
 import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
-const API_URL = "https://localhost:8009";
+const API_URL = process.env.CLIENT_URL;
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            const res = await fetch(`${API_URL}/auth/auto-login`, {
+                method: "POST",
+                credentials: true
+            })
+
+            const result = await res.json()
+
+            if (res.ok) {
+                setUser(result)
+            }
+        })
+    }, [])
 
     const signup = async (formObj) => {
         try {
@@ -24,12 +41,12 @@ export function AuthProvider({ children }) {
                 throw new Error(data.message);
             }
 
-            setUser(data.data?.user || data.user || data);
+            setUser(data);
 
             alert("You have succesfully signed up!");
         } catch (err) {
-            console.error(err);
-            alert(err.message || "Signup failed");
+            alert("Signup failed");
+            throw new Error(err.message);
         }
     };
 
@@ -50,13 +67,12 @@ export function AuthProvider({ children }) {
                 throw new Error(result.message);
             }
 
-            const loggedInUser = result?.data?.user || result?.user || result;
-
-            setUser(loggedInUser);
+            setUser(result);
 
             alert("You have succesfully logged in!")
         } catch (err) {
-            alert(err.message || "Login failed");
+            alert("Login failed");
+            throw new Error(err.message)
         }
     };
 
