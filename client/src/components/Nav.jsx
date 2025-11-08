@@ -27,11 +27,8 @@ export default function Nav() {
                 <Link to="/about">
                     About
                 </Link>
-                <Link to="/courses">
-                    Courses
-                </Link>
-                <Link to="/contact">
-                    Contact
+                <Link to="/products">
+                    Products
                 </Link>
                 {
                     !user ? authLinks : (

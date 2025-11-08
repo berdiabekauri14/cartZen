@@ -1,11 +1,10 @@
-/* eslint-disable no-undef */
 /* eslint-disable react-refresh/only-export-components */
 import { useEffect } from "react";
 import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
-const API_URL = process.env.CLIENT_URL;
+const API_URL = import.meta.env.CLIENT_URL;
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState([]);
