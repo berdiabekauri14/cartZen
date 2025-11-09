@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-refresh/only-export-components */
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
+
+export const useAuth = useContext(AuthContext)
 
 const API_URL = import.meta.env.CLIENT_URL;
 

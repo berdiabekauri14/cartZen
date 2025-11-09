@@ -1,9 +1,8 @@
 import { Link } from "react-router";
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
+import { useAuth } from "../context/auth.context";
 
 export default function Nav() {
-    const { user, logout } = useContext(AuthContext);
+    const { user, logout } = useAuth();
 
     const authLinks = (
         <>

@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/auth.context";
+import { useAuth } from "../context/auth.context";
 
 export default function Signup() {
-    const { signUp } = useContext(AuthContext)
+    const { signUp } = useAuth()
     
     return (
         <form>
