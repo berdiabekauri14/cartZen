@@ -5,11 +5,13 @@ import About from "./pages/About";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Products from "./pages/Products";
+import { ToastContainer } from "react-toastify";
 
 
 export default function App() {
   return (
     <>
+      <ToastContainer />
       <Nav />
       <br />
       <Routes>

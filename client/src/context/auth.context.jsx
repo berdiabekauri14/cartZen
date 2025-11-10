@@ -2,6 +2,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useContext, useEffect } from "react";
 import { createContext, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const AuthContext = createContext();
 
@@ -45,9 +47,9 @@ export function AuthProvider({ children }) {
 
             setUser(data);
 
-            alert("You have succesfully signed up!");
+            toast.success("You have successfully signed up!");
         } catch (err) {
-            alert("Signup failed");
+            toast.error("Signup failed");
             throw new Error(err.message);
         }
     };
@@ -71,17 +73,16 @@ export function AuthProvider({ children }) {
 
             setUser(result);
 
-            alert("You have succesfully logged in!")
+            toast.success("You have successfully logged in!");
         } catch (err) {
-            alert("Login failed");
+            toast.error("Login failed");
             throw new Error(err.message)
         }
     };
 
-
     const logout = async () => {
         setUser(null);
-        alert("You have successfully logged out");
+        toast.info("You have successfully logged out");
     };
 
     return (

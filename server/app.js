@@ -1,45 +1,30 @@
-const express = require("express")
-const dotenv = require("dotenv")
-const morgan = require("morgan")
-const mongoose = require("mongoose")
-const globalErrorHandler = require("./controllers/error.controller")
-const cors = require("cors")
-const laptopRouter = require("./routers/laptop.router")
-const authRouter = require("./routers/auth.router")
-const userRouter = require("./routers/user.router")
-const cookieParser = require("cookie-parser")
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+const laptopRouter = require('./routers/laptop.router');
+const globalErrorHandler = require('./controllers/error.controller');
+const authRouter = require('./routers/auth.router');
 
-const app = express()
+dotenv.config();
 
-dotenv.config()
+const app = express();
 
-if (process.env.NODE_ENV === "development") {
-    app.use(morgan("dev"))
-}
+app.use(cors());
+app.use(cookieParser());
+app.use(express.json());
 
-app.use(globalErrorHandler)
+app.use('/api/laptops', laptopRouter);
+app.use('/api/auth', authRouter)
 
-app.use(cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true
-}))
+app.use(globalErrorHandler); 
 
-app.use(express.json())
-
-app.use(cookieParser())
-
-app.use("/api/laptops", laptopRouter)
-
-app.use("/api/users", userRouter)
-
-app.use("/api/auth", authRouter)
-
-mongoose.connect(process.env.DATABASE)
+mongoose.connect(process.env.DB)
     .then(() => {
-        console.log("MongoDB is succesfully running")
-        app.listen(process.env.PORT, () => {
-            console.log(`Server is running on port ${process.env.PORT}`)
-        })
-    })
-    .catch(err => console.log(`Error has been appeared in your code: ${err}`))
+        console.log('Connected to MongoDB');
 
+        app.listen(3000, () => {
+            console.log('Server is running on port 3000');
+        });
+    });
