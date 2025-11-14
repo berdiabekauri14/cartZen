@@ -2,6 +2,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getLocal, setLocal } from "../utils/localStorage";
 
 export const LaptopContext = createContext();
 
@@ -22,6 +23,7 @@ export function LaptopProvider({ children }) {
 
       const result = await res.json();
       setLaptops(result);
+      getLocal("Laptops")
       toast.success("Laptops fetched successfully!");
     } catch (err) {
       console.error(err);
@@ -39,9 +41,10 @@ export function LaptopProvider({ children }) {
       if (!res.ok) {
         throw new Error("Something went wrong");
       }
-
+      
       const result = await res.json();
       setLaptops(result);
+      setLocal("Laptops", result)
       toast.success("Laptop deleted successfully!");
     } catch (err) {
       console.error(err);
@@ -66,6 +69,7 @@ export function LaptopProvider({ children }) {
 
       const result = await res.json();
       setLaptops(result);
+      setLocal("Laptops", result)
       toast.success("Laptop updated successfully!");
     } catch (err) {
       console.error(err);
@@ -90,6 +94,7 @@ export function LaptopProvider({ children }) {
 
       const result = await res.json();
       setLaptops(result);
+      setLocal("Laptops", result)
       toast.success("Laptop added successfully!");
     } catch (err) {
       console.error(err);
