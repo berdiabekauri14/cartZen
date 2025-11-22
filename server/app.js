@@ -6,6 +6,9 @@ const cookieParser = require('cookie-parser');
 const laptopRouter = require('./routers/laptop.router');
 const globalErrorHandler = require('./controllers/error.controller');
 const authRouter = require('./routers/auth.router');
+const rateLimit = require("rateLimit")
+const mongoSanitizer = require("mongoose")
+const helmet = require("helmet")
 
 dotenv.config();
 
@@ -14,6 +17,9 @@ const app = express();
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+app.use(rateLimit())
+app.use(mongoSanitizer())
+app.use(helmet())
 
 app.use('/api/laptops', laptopRouter);
 app.use('/api/auth', authRouter)
