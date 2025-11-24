@@ -1,4 +1,5 @@
 import { useAuth } from "../context/auth.context";
+import Link from "react-router"
 
 export default function Signup() {
     const { signUp } = useAuth()
@@ -12,6 +13,8 @@ export default function Signup() {
             <input type="password" name="password" placeholder="Create a password" />
             <br />
             <button onClick={signUp}>Submit</button>
+            <br />
+            <Link to="/logIn">Login</Link>
         </form>
     )
 }

@@ -1,3 +1,4 @@
+import React from "react"
 import { Route, Routes } from "react-router";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
@@ -8,7 +9,7 @@ import Products from "./pages/Products";
 import { ToastContainer } from "react-toastify";
 
 
-export default function App() {
+export default React.memo(function App() {
   return (
     <>
       <ToastContainer />
@@ -27,4 +28,4 @@ export default function App() {
       </footer>
     </>
   )
-}
+})

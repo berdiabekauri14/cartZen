@@ -7,7 +7,7 @@ const laptopRouter = require('./routers/laptop.router');
 const globalErrorHandler = require('./controllers/error.controller');
 const authRouter = require('./routers/auth.router');
 const rateLimit = require("rateLimit")
-const mongoSanitizer = require("mongoose")
+const mongoSanitize = require("express-mongo-sanitize")
 const helmet = require("helmet")
 
 dotenv.config();
@@ -17,8 +17,12 @@ const app = express();
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
-app.use(rateLimit())
-app.use(mongoSanitizer())
+app.use(rateLimit({
+    windowsMs: 15 * 60 * 1000,
+    limit: 100,
+    message: "Too many requests, Please try again later."
+}))
+app.use(mongoSanitize())
 app.use(helmet())
 
 app.use('/api/laptops', laptopRouter);
