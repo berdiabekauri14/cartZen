@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const crypto = require("crypto")
 const bcrypt = require("bcryptjs")
-const validator = require("validator")
+const validator = require("validator");
+const { type } = require("os");
 
 const userSchema = new mongoose.Schema({
     fullname: {
@@ -34,6 +35,20 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+
+    isActive: {
+        type: Boolean,
+        default: false
+    },
+
+    oauthid: {
+        type: Number
+    },
+
+    oauthProvider: {
+        enum: ["google", "facebook", null],
+        default: null
     },
 
     verificationCode: String
