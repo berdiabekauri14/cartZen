@@ -65,4 +65,43 @@ const googleCallback = async (req, res, next) => {
     }
 };
 
-module.exports = {googleCallback, getGoogleAuthUrl};
+
+const getFacebookAuthUrl = (req, res) => {
+    const params = new URLSearchParams({
+        client_id: FACEBOOK_CLIENT_ID,
+        redirect_uri: REDIRECT_URI,
+        scope: "public_profile",
+    });
+
+    res.redirect(`https://www.facebook.com/v17.0/dialog/oauth?${params.toString()}`);
+};
+
+const facebookCallback = async (req, res) => {
+    try {
+        const { code } = req.query;
+        
+        const tokenResponse = await axios.get("https://graph.facebook.com/v17.0/oauth/access_token", {
+            params: {
+                client_id: FACEBOOK_CLIENT_ID,
+                client_secret: FACEBOOK_CLIENT_SECRET,
+                redirect_uri: REDIRECT_URI,
+                code,
+            },
+        });
+        
+        const { access_token } = tokenResponse.data;
+        
+        const userInfo = await axios.get("https://graph.facebook.com/me", {
+            params: {
+                fields: "id,name,email,picture",
+                access_token
+            }
+        });
+        
+        console.log(userInfo.data);
+    } catch(err) {
+        console.log(err);
+    }
+};
+
+module.exports = {googleCallback, getGoogleAuthUrl, getFacebookAuthUrl, facebookCallback};
