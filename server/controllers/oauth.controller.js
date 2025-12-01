@@ -4,6 +4,10 @@ const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 
+const GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize"
+const GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
+const GITHUB_USERINFO_URL = "https://api.github.com/user"
+
 const getGoogleAuthUrl = (req, res) => {
     const params = new URLSearchParams({
         client_id: process.env.GOOGLE_CLIENT_ID,
@@ -104,4 +108,40 @@ const facebookCallback = async (req, res) => {
     }
 };
 
-module.exports = {googleCallback, getGoogleAuthUrl, getFacebookAuthUrl, facebookCallback};
+const getGithubAuthUrl = (req, res) => {
+    const rootUrl = 'https://github.com/login/oauth/authorize';
+    const params = new URLSearchParams({
+        client_id: process.env.GITHUB_CLIENT_ID,
+        redirect_uri: process.env.GITHUB_REDIRECT_URI,
+        scope: 'read:user user:email',
+    });
+
+    res.redirect(`${rootUrl}?${params.toString()}`);
+};
+
+const githubCallback = async (req, res) => {
+    try {
+        const { code } = req.query;
+
+        const tokenResponse = await axios.get('https://github.com/login/oauth/access_token', {
+            params: {
+                client_id: process.env.GITHUB_CLIENT_ID,
+                client_secret: process.env.GITHUB_SECRET,
+                code,
+                redirect_uri: process.env.GITHUB_REDIRECT_URI
+            }
+        });
+
+        const accessToken = new URLSearchParams(tokenResponse.data).get('access_token');
+
+        const userInfo = await axios.get('https://api.github.com/user', {
+            headers: { Authorization: `Bearer ${accessToken}` }
+        });
+
+        console.log(userInfo.data)
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+module.exports = {googleCallback, getGoogleAuthUrl, getFacebookAuthUrl, facebookCallback, getGithubAuthUrl, githubCallback};
