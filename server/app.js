@@ -8,7 +8,8 @@ const globalErrorHandler = require('./controllers/error.controller');
 const authRouter = require('./routers/auth.router');
 const rateLimit = require("rateLimit")
 const mongoSanitize = require("express-mongo-sanitize")
-const helmet = require("helmet")
+const helmet = require("helmet");
+const stripeRouter = require('./routers/stripe.router');
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(rateLimit({
 }))
 app.use(mongoSanitize())
 app.use(helmet())
+app.use("/payment", stripeRouter);
 
 app.use('/api/laptops', laptopRouter);
 app.use('/api/auth', authRouter)
