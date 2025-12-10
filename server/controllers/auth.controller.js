@@ -1,7 +1,7 @@
 const catchAsync = require("../utils/catchAsync.js")
 const AppError = require("../utils/appError.js")
 const jwt = require("jsonwebtoken")
-const User = require("../models/user.model.js")
+const User = require("user.model.js")
 
 const signToken = (id, role) => { 
     return jwt.sign({ id, role }, process.env.TOKEN, {

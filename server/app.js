@@ -10,10 +10,33 @@ const rateLimit = require("rateLimit")
 const mongoSanitize = require("express-mongo-sanitize")
 const helmet = require("helmet");
 const stripeRouter = require('./routers/stripe.router');
+const http = require("http")
+const { Server } = require("socket.io")
 
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app)
+const io = new Server(server)
+
+io.on('connection', (socket) => {
+    console.log('A client connected:', socket.id);
+
+    socket.emit('greet', { message: 'Welcome to the Socket.IO server!' });
+
+    socket.on('greet', (data) => {
+        console.log('Client greeted:', data);
+        socket.emit('greet', { message: 'Hello from server!' });
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected:', socket.id);
+    });
+});
+
+app.get('/', (req, res) => {
+    res.send('Socket.IO server is running');
+});
 
 app.use(cors());
 app.use(cookieParser());
@@ -36,7 +59,7 @@ mongoose.connect(process.env.DB)
     .then(() => {
         console.log('Connected to MongoDB');
 
-        app.listen(3000, () => {
+        server.listen(3000, () => {
             console.log('Server is running on port 3000');
         });
     });
